@@ -1,6 +1,8 @@
 package org.backend.senebank.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.io.Serializable;
@@ -18,8 +20,9 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Invalid email")
+    @Email(message = "Invalid email")
     private String email;
 
     private String password;

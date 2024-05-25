@@ -1,5 +1,7 @@
 package org.backend.senebank.controllers;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.backend.senebank.exceptions.*;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,15 @@ public class GlobalExceptionController {
         }
 
         return new ResponseEntity<>(body, status);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
+        Map<String, String> errors = new LinkedHashMap<>();
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+            errors.put(violation.getPropertyPath().toString(), violation.getMessage());
+        }
+        return ResponseEntity.badRequest().body(errors);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
