@@ -3,7 +3,6 @@ package org.backend.senebank.controllers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.backend.senebank.dto.models.UserModel;
-import org.backend.senebank.dto.request.DeleteUserRequest;
 import org.backend.senebank.dto.request.JwtRequest;
 import org.backend.senebank.dto.response.JwtResponse;
 import org.backend.senebank.entities.User;
@@ -41,11 +40,10 @@ public class UserController {
     }
 
     @DeleteMapping("/")
-    private ResponseEntity<?> deleteUser(@RequestBody DeleteUserRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        log.info("Delete request: {}", request);
-        Long idToDelete = request.id();
-        Long idOfDeletingUser = userDetails.getId();
-        userService.delete(idToDelete, idOfDeletingUser);
+    private ResponseEntity<?> deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.info("Delete request: {}", userDetails.getEmail());
+        User user = userDetails.getUser();
+        userService.delete(user);
         return ResponseEntity.noContent().build();
     }
 }

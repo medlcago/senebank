@@ -32,11 +32,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Long idToDelete, Long idOfDeletingUser) {
-        if (!idToDelete.equals(idOfDeletingUser)) {
-            throw new AccessDeniedException("Access denied");
-        }
-        userDao.delete(idToDelete);
+    public void delete(User user) {
+        userDao.delete(user);
     }
 
     @Override

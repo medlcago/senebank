@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface UserService {
     String create(String email, String password);
 
-    void delete(Long idToDelete, Long idOfDeletingUser);
+    void delete(User user);
 
     String login(String email, String password);
 

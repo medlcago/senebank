@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.backend.senebank.dto.response.ErrorMessage;
+import org.backend.senebank.dto.response.ErrorResponse;
 import org.backend.senebank.security.user.UserDetailsImpl;
 import org.backend.senebank.security.user.UserDetailsServiceImpl;
 import org.backend.senebank.services.Impl.JwtServiceImpl;
@@ -35,7 +35,7 @@ public class JwtRequestsFilter extends OncePerRequestFilter {
             String jwt = authHeader.substring(7);
             boolean isValid = jwtService.validateToken(jwt);
             if (!isValid) {
-                webUtils.sendJsonResponse(response, 401, new ErrorMessage("Invalid token"));
+                webUtils.sendJsonResponse(response, 401, new ErrorResponse("Invalid token"));
                 return;
             }
             email = jwtService.getEmail(jwt);

@@ -4,13 +4,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.backend.senebank.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Контроллер для перехвата исключений
+ */
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionController {
@@ -36,6 +41,16 @@ public class GlobalExceptionController {
         }
 
         return new ResponseEntity<>(body, status);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<?> methodNotAllowed() {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<?> notFound() {
+        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(value = {Exception.class})
